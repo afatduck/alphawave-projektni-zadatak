@@ -24,7 +24,8 @@ class InventoryItemForm
                     ->live()
                     ->options([
                     'in_stock' => 'In stock',
-                    'delivered' => 'Delivered',
+                    'faulty' => 'Faulty',
+                    'replaced' => 'Replaced',
                 ]),
                 DatePicker::make('purchased_at'),
                 DatePicker::make('warranty_expires_at'),

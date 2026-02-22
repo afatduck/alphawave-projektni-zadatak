@@ -12,8 +12,9 @@ class StatsOverview extends StatsOverviewWidget
     protected function getStats(): array
     {
         return [
-            Stat::make('Total Clients', Client::count()),
-            Stat::make('Active Inventory', InventoryItem::where('status', 'in_stock')->count()),
+            Stat::make('Items in stock', InventoryItem::where('status', 'in_stock')->count()),
+            Stat::make('Items delivered', InventoryItem::where('status', 'delivered')->count()),
+            Stat::make('Faulty items', InventoryItem::where('status', 'faulty')->count()),
             Stat::make('Expiring Soon', 
             InventoryItem::whereRaw("
                             COALESCE(

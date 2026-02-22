@@ -27,6 +27,7 @@ class ItemsRelationManager extends RelationManager
             ->components([
                 Select::make('inventory_item_id')
                     ->relationship('inventoryItem', 'id', fn (Builder $query) => $query->where('status', 'in_stock'))
+                    ->getOptionLabelFromRecordUsing(fn ($record) => $record->product->name)
                     ->required(),
             ]);
     }
@@ -36,7 +37,7 @@ class ItemsRelationManager extends RelationManager
         return $table
             ->recordTitleAttribute('inventoryItem.product.name')
             ->columns([
-                TextColumn::make('inventoryItem.id')
+                TextColumn::make('inventoryItem.product.name')
                     ->searchable(),
                 TextColumn::make('created_at')
                     ->dateTime()
