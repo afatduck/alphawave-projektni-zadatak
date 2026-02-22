@@ -11,4 +11,6 @@ class ClientContact extends Model
     {
         return $this->belongsTo(Client::class);
     }
+
+    protected $fillable = ["first_name", "last_name", "email", "position", "phone"];
 }

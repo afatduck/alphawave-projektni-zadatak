@@ -11,4 +11,6 @@ class Product extends Model
     {
         return $this->hasMany(InventoryItem::class);
     }
+
+    protected $fillable = ["name", "sku", "manufacturer", "warranty_months"];
 }

@@ -16,4 +16,6 @@ class Client extends Model
     {
         return $this->hasMany(ClientContact::class);
     }
+
+    protected $fillable = ["name", "type", "oib", "email", "phone", "email"];
 }

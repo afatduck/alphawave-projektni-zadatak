@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId("product_id");
             $table->string("serial_number")->unique();
-            $table->string("status");
+            $table->enum("status", ["in_stock", "delivered"]);
             $table->date("purchased_at")->nullable();
             $table->date("warranty_expires_at")->nullable();
             $table->string("notes")->nullable();

@@ -16,4 +16,16 @@ class DeliveryItem extends Model
     {
         return $this->belongsTo(InventoryItem::class);
     }
+
+    protected static function booted()
+    {
+        static::created(function ($model) {
+            $model->inventoryItem->update(["status" => "delivered"]);
+        });
+    }
+
+    protected $fillable = [
+        "delivery_id",
+        "inventory_item_id",
+    ];
 }

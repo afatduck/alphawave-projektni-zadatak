@@ -17,4 +17,11 @@ class Delivery extends Model
     {
         return $this->hasMany(DeliveryItem::class);
     }
+
+    protected $fillable = [
+        "client_id",
+        "delivered_at",
+        "reference",
+        "note",
+    ];
 }

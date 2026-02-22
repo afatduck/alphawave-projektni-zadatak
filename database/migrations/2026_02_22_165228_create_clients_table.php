@@ -17,6 +17,7 @@ return new class extends Migration
             $table->enum("type", ["person", "company"]);
             $table->string("oib")->nullable();
             $table->string("email")->nullable();
+            $table->string("phone")->nullable();
             $table->string("address")->nullable();
             $table->timestamps();
         });
