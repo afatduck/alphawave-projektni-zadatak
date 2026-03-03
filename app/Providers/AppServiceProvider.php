@@ -2,6 +2,9 @@
 
 namespace App\Providers;
 
+use Filament\Support\Assets\Css;
+use Filament\Support\Assets\Js;
+use Filament\Support\Facades\FilamentAsset;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -19,6 +22,9 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        //
+        FilamentAsset::register([
+            Js::make("linechart", asset('js/linechart.js')),
+            Css::make("linechart", asset("css/linechart.css"))
+        ]);
     }
 }

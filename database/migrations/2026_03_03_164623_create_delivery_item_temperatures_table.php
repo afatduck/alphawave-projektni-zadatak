@@ -11,12 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('delivery_items', function (Blueprint $table) {
+        Schema::create('delivery_item_temperatures', function (Blueprint $table) {
             $table->id();
-            $table->foreignId("delivery_id");
-            $table->foreignId("inventory_item_id")->unique();
-            $table->float("longitude");
-            $table->float("latitude");
+            $table->foreignId("delivery_item_id")->constrained()->onDelete("cascade");
+            $table->dateTime("recorded_at");
+            $table->float("temperature");
             $table->timestamps();
         });
     }
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('delivery_items');
+        Schema::dropIfExists('delivery_item_temperatures');
     }
 };

@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Deliveries\RelationManagers;
 
+use App\Filament\Tables\Columns\LineChartColumn;
 use Filament\Actions\AssociateAction;
 use Filament\Actions\BulkActionGroup;
 use Filament\Actions\CreateAction;
@@ -39,6 +40,14 @@ class ItemsRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('inventoryItem.product.name')
                     ->searchable(),
+                LineChartColumn::make("temperature (24h)")
+                    ->state(fn ($record) => $record->temperatures
+                    ->map(fn ($t) => [
+                        'temperature' => $t->temperature,
+                        'time' => $t->recorded_at->format('H'),
+                    ])
+                    ->toArray()
+                ),
                 TextColumn::make('created_at')
                     ->dateTime()
                     ->sortable()

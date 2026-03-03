@@ -4,6 +4,9 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
+use Illuminate\Database\Eloquent\Relations\HasMany;
+use Random\Randomizer;
+use App\Services\FetchTemperaturesService;
 
 class DeliveryItem extends Model
 {
@@ -17,10 +20,28 @@ class DeliveryItem extends Model
         return $this->belongsTo(InventoryItem::class);
     }
 
-    protected static function booted()
+    public function temperatures(): HasMany
     {
+        return $this->hasMany(DeliveryItemTemperature::class);
+    }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $randomizer = new Randomizer();
+            $model->longitude = $randomizer->getFloat(-180, 180);
+            $model->latitude = $randomizer->getFloat(-90, 90);
+        });
+            
         static::created(function ($model) {
             $model->inventoryItem->update(["status" => "delivered"]);
+            app(FetchTemperaturesService::class)->updateDeliveryItemTemperatures(
+                $model->id,
+                $model->longitude,
+                $model->latitude
+            );
         });
     }
 
@@ -28,4 +49,5 @@ class DeliveryItem extends Model
         "delivery_id",
         "inventory_item_id",
     ];
+
 }
