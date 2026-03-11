@@ -22,7 +22,7 @@ class DeliveryItem extends Model
 
     public function temperatures(): HasMany
     {
-        return $this->hasMany(DeliveryItemTemperature::class);
+        return $this->hasMany(DeliveryItemTemperature::class)->orderBy("id");
     }
 
     protected static function boot()
