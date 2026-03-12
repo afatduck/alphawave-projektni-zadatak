@@ -6,9 +6,11 @@ use Filament\Actions\BulkActionGroup;
 use Filament\Actions\DeleteBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Tables\Columns\TextColumn;
+use Filament\Tables\Filters\Filter;
 use Filament\Tables\Filters\SelectFilter;
 use Filament\Tables\Table;
 use Illuminate\Database\Eloquent\Builder;
+use Malzariey\FilamentDaterangepickerFilter\Filters\DateRangeFilter;
 
 class ServiceLogsTable
 {
@@ -27,7 +29,6 @@ class ServiceLogsTable
                     ),
                 TextColumn::make('performed_at')
                     ->dateTime()
-                    ->searchable()
                     ->sortable(),
                 TextColumn::make('action')
                     ->formatStateUsing(fn (string $state) => ucfirst($state)),
@@ -48,6 +49,7 @@ class ServiceLogsTable
                         'repair' => 'Repair',
                         'upgrade' => 'Upgrade'
                     ]),
+                DateRangeFilter::make("performed_at")
             ])
             ->recordActions([
             ])
