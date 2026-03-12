@@ -11,6 +11,7 @@ use Filament\Actions\DissociateAction;
 use Filament\Actions\DissociateBulkAction;
 use Filament\Actions\EditAction;
 use Filament\Forms\Components\DateTimePicker;
+use Filament\Forms\Components\Radio;
 use Filament\Forms\Components\TextInput;
 use Filament\Resources\RelationManagers\RelationManager;
 use Filament\Schemas\Schema;
@@ -27,8 +28,14 @@ class ServiceLogsRelationManager extends RelationManager
             ->components([
                 DateTimePicker::make('performed_at')
                     ->required(),
-                TextInput::make('action')
-                    ->required(),
+                Radio::make('action')
+                    ->required()
+                    ->live()
+                    ->options([
+                    'inspection' => 'Inspection',
+                    'repair' => 'Repair',
+                    'upgrade' => 'Upgrade'
+                ]),
                 TextInput::make('description'),
             ]);
     }
@@ -42,6 +49,7 @@ class ServiceLogsRelationManager extends RelationManager
                     ->dateTime()
                     ->sortable(),
                 TextColumn::make('action')
+                    ->formatStateUsing(fn (string $state) => ucfirst($state))
                     ->searchable(),
                 TextColumn::make('description')
                     ->searchable(),

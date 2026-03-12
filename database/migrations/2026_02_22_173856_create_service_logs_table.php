@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId("inventory_item_id");
             $table->datetime("performed_at");
-            $table->string("action");
+            $table->enum("action", ["inspection", "repair", "upgrade"]);
             $table->string("description")->nullable();
             $table->timestamps();
         });
