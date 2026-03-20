@@ -2,6 +2,7 @@
 
 namespace App\Filament\Resources\Deliveries\RelationManagers;
 
+use App\Filament\Resources\DeliveryItems\DeliveryItemResource;
 use App\Filament\Tables\Columns\LineChartColumn;
 use Filament\Actions\AssociateAction;
 use Filament\Actions\BulkActionGroup;
@@ -37,6 +38,7 @@ class ItemsRelationManager extends RelationManager
     {
         return $table
             ->recordTitleAttribute('inventoryItem.product.name')
+            ->recordUrl(fn ($record) => DeliveryItemResource::getUrl('view', ['record' => $record]))
             ->columns([
                 TextColumn::make('inventoryItem.product.name')
                     ->searchable(),

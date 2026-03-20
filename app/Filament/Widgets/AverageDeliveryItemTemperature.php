@@ -2,25 +2,28 @@
 
 namespace App\Filament\Widgets;
 
+use App\Models\DeliveryItemTemperature;
 use Filament\Widgets\StatsOverviewWidget;
 use Filament\Widgets\StatsOverviewWidget\Stat;
-use Illuminate\Support\Facades\DB;
 
 class AverageDeliveryItemTemperature extends StatsOverviewWidget
 {
     protected function getStats(): array
     {
-
-        $average = DB::table("delivery_item_temperatures")
-            ->whereIn("id", function ($sub) {
-                $sub->selectRaw("MAX(id)")
-                    ->from("delivery_item_temperatures")
-                    ->groupBy("delivery_item_id");
+        $average = DeliveryItemTemperature::query()
+            ->whereIn('id', function ($q) {
+                $q->selectRaw('MAX(id)')
+                    ->from('delivery_item_temperatures')
+                    ->groupBy('delivery_item_id');
             })
-            -> avg("temperature");
+            ->avg('temperature');
+
+        $displayAverage = $average !== null
+            ? number_format((float) $average, 2) . '°C'
+            : 'N/A';
 
         return [
-            Stat::make('Average Delivery Item Temperature', $average . '°C'),
+            Stat::make('Average Delivery Item Temperature', $displayAverage),
         ];
     }
 }
