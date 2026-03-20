@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Random\Randomizer;
-use App\Services\FetchTemperaturesService;
+use App\Services\SeedDeliveryItemTemperaturesService;
 
 class DeliveryItem extends Model
 {
@@ -37,10 +37,15 @@ class DeliveryItem extends Model
             
         static::created(function ($model) {
             $model->inventoryItem->update(["status" => "delivered"]);
-            app(FetchTemperaturesService::class)->updateDeliveryItemTemperatures(
+
+            if (! config('temperatures.use_seeder')) {
+                return;
+            }
+
+            app(SeedDeliveryItemTemperaturesService::class)->createForDeliveryItem(
                 $model->id,
                 $model->longitude,
-                $model->latitude
+                $model->latitude,
             );
         });
     }

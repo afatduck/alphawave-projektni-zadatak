@@ -42,7 +42,7 @@ class ItemsRelationManager extends RelationManager
             ->columns([
                 TextColumn::make('inventoryItem.product.name')
                     ->searchable(),
-                LineChartColumn::make("temperature (24h)")
+                LineChartColumn::make("temperature")
                     ->state(fn ($record) => $record->temperatures
                     ->map(fn ($t) => [
                         'temperature' => $t->temperature,
