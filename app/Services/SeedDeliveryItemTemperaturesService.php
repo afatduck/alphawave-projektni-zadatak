@@ -30,6 +30,7 @@ class SeedDeliveryItemTemperaturesService
                 'delivery_item_id' => $deliveryItemId,
                 'recorded_at' => $recordedAt,
                 'temperature' => round($baseTemperature + random_int(-40, 40) / 10, 1),
+                'is_alert' => false,
                 'created_at' => $insertedAt,
                 'updated_at' => $insertedAt,
             ];

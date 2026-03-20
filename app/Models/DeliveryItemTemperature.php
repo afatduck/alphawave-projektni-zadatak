@@ -12,9 +12,10 @@ class DeliveryItemTemperature extends Model
         return $this->belongsTo(DeliveryItem::class);
     }
 
-    protected $fillable = ["delivery_item_id", "recorded_at", "temperature"];
+    protected $fillable = ["delivery_item_id", "recorded_at", "temperature", "is_alert"];
 
     protected $casts = [
         'recorded_at' => 'datetime',
+        'is_alert' => 'boolean',
     ];
 }
