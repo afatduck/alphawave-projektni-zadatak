@@ -1,5 +1,6 @@
 <?php
 
+use App\Jobs\FetchTemperaturesJob;
 use Illuminate\Support\Facades\Schedule;
 use Illuminate\Foundation\Inspiring;
 use Illuminate\Support\Facades\Artisan;
@@ -9,4 +10,4 @@ Artisan::command('inspire', function () {
 })->purpose('Display an inspiring quote');
 
 
-Schedule::command("app:fetch-temperatures")->hourly();
+Schedule::job(new FetchTemperaturesJob())->hourly();

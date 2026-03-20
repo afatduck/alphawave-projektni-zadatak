@@ -5,9 +5,6 @@ use App\Models\DeliveryItem;
 use App\Models\DeliveryItemTemperature;
 use Illuminate\Support\Facades\Http;
 
-const OPEN_METEO_URI = "https://api.open-meteo.com/v1/forecast";
-const MAX_HOURS = 24;
-
 class FetchTemperaturesService
 {
     public function updateDeliveryItemTemperatures(
@@ -19,7 +16,7 @@ class FetchTemperaturesService
         $now = now()->utc()->subHour();
         $yesterday = $now->copy()->subHours(23);
 
-        $response = Http::get(OPEN_METEO_URI, [
+        $response = Http::get(config('temperatures.api_uri'), [
             'latitude' => $latitude,
             'longitude' => $longitude,
             'hourly' => 'temperature_2m',
@@ -55,18 +52,19 @@ class FetchTemperaturesService
 
     private function deleteOldRecords(): void
     {
+        $maxHours = config('temperatures.delivery_item_temperature_hours');
+
         $groupedCounts = DeliveryItemTemperature::selectRaw("delivery_item_id, COUNT(*) as count")
             ->groupBy('delivery_item_id')
-            ->havingRaw('COUNT(*) > ?', [MAX_HOURS])
+            ->havingRaw('COUNT(*) > ?', [$maxHours])
             ->get();
         
         foreach ($groupedCounts as $gc) {
             DeliveryItemTemperature::where("delivery_item_id", $gc->delivery_item_id)
                 ->orderBy("id", "desc")
-                ->skip(MAX_HOURS)
-                ->take($gc->count - MAX_HOURS)
+                ->skip($maxHours)
+                ->take($gc->count - $maxHours)
                 ->delete();
         }
     }
 }
-?>
