@@ -32,6 +32,8 @@ class DeliveryItemTemperaturesChart extends ChartWidget
 
         $labels = [];
         $data = [];
+        $pointBackgroundColor = [];
+        $pointBorderColor = [];
 
         $temperatureByHour = $this->record
             ? $this->record
@@ -44,9 +46,18 @@ class DeliveryItemTemperaturesChart extends ChartWidget
         for ($i = 0; $i < $hours; $i++) {
             $hour = $start->copy()->addHours($i);
             $hourKey = $hour->format('Y-m-d H:00:00');
+            $temperatureRecord = $temperatureByHour->get($hourKey);
 
             $labels[] = $hour->format('H:i');
-            $data[] = $temperatureByHour->get($hourKey)?->temperature;
+            $data[] = $temperatureRecord?->temperature;
+
+            if ($temperatureRecord?->is_alert) {
+                $pointBackgroundColor[] = 'rgb(239, 68, 68)';
+                $pointBorderColor[] = 'rgb(239, 68, 68)';
+            } else {
+                $pointBackgroundColor[] = 'rgb(59, 130, 246)';
+                $pointBorderColor[] = 'rgb(59, 130, 246)';
+            }
         }
 
         return [
@@ -55,6 +66,8 @@ class DeliveryItemTemperaturesChart extends ChartWidget
                     'label' => 'Temperature',
                     'data' => $data,
                     'tension' => 0.3,
+                    'pointBackgroundColor' => $pointBackgroundColor,
+                    'pointBorderColor' => $pointBorderColor,
                 ],
             ],
             'labels' => $labels,
