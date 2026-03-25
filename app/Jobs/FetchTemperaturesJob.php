@@ -16,9 +16,16 @@ class FetchTemperaturesJob implements ShouldQueue
 {
     use Queueable;
 
+    public int $tries = 10;
+    public int $backoff = 30;
+
     public function handle(): void
     {
-        $this->updateAllTemperatures();
+        try {
+            $this->updateAllTemperatures();
+        } catch (\Exception $e) {
+            $this->release($this->backoff);
+        }
         $this->deleteOldRecords();
     }
 
