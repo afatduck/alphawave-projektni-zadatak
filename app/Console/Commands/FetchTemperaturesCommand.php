@@ -2,7 +2,7 @@
 
 namespace App\Console\Commands;
 
-use App\Jobs\FetchTemperaturesJob;
+use App\Jobs\FetchAllTemperaturesJob;
 use Illuminate\Console\Command;
 
 class FetchTemperaturesCommand extends Command
@@ -26,9 +26,9 @@ class FetchTemperaturesCommand extends Command
      */
     public function handle(): int
     {
-        FetchTemperaturesJob::dispatch();
+        FetchAllTemperaturesJob::dispatch();
 
-        $this->info('Fetch temperatures job has been dispatched.');
+        $this->info('Fetch all temperatures job has been dispatched.');
 
         return self::SUCCESS;
     }
